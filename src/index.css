@@ -3,9 +3,16 @@
 	padding: 0;
 	box-sizing: border-box;
 	user-select: none;
-	font-family: 'Segoe', 'Segoe UI', Arial, 'sans-serif';
+	/*'Segoe', 'Segoe UI', Arial, 'sans-serif'*/
+	font-family: Verdana, Geneva, sans-serif !important;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
+	transition: all ease .3s;
+}
+
+body {
+	background-color: #F2F3FA;
+	min-width: 350px;
 }
 
 a {
