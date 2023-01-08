@@ -7,6 +7,9 @@ import * as D from './style'
 import DestinyMainBox from '../DestinyMainBox'
 
 import berlim from '../../../../assets/images/berlim.jpeg'
+import buda from '../../../../assets/images/budapest.jpeg'
+import madrid from '../../../../assets/images/madrid.jpeg'
+import bali from '../../../../assets/images/bali.jpeg'
 
 const containsText = (text, searchText) => text.toLowerCase().indexOf(searchText.toLowerCase()) > -1
 
@@ -88,16 +91,16 @@ const Destiny = () => {
                                 <img src={berlim} alt='/' />
                                 <D.DestinyChildBoxDetails>
                                     <h3 className='text-[#2564CF] text-lg font-semibold'>
-                                        Dubai
+                                        Berlim
                                     </h3>
                                     <div className='mb-4 text-[15px] text-[#555]'>
-                                        15 Jan 2023 - 20 Jan 2023
+                                        25 Apr 2023 - 02 Nov 2023
                                     </div>
                                     <div className='text-[15px] text-[#555]'>
                                         Econômica A partir de
                                     </div>
                                     <div className='text-[15px] text-[#333)'>
-                                        USD 2066
+                                        USD 1586
                                     </div>
                                     <D.DestinyChildBoxDetailsButton href='/'>
                                         <GiAirplaneDeparture />
@@ -105,19 +108,19 @@ const Destiny = () => {
                                 </D.DestinyChildBoxDetails>
                             </D.DestinyChildBox>
                             <D.DestinyChildBox>
-                                <img src={berlim} alt='/' />
+                                <img src={buda} alt='/' />
                                 <D.DestinyChildBoxDetails>
                                     <h3 className='text-[#2564CF] text-lg font-semibold'>
-                                        Dubai
+                                        Budapeste
                                     </h3>
                                     <div className='mb-4 text-[15px] text-[#555]'>
-                                        15 Jan 2023 - 20 Jan 2023
+                                        10 Fev 2023 - 12 Ago 2023
                                     </div>
                                     <div className='text-[15px] text-[#555]'>
                                         Econômica A partir de
                                     </div>
                                     <div className='text-[15px] text-[#333)'>
-                                        USD 2066
+                                        USD 1218
                                     </div>
                                     <D.DestinyChildBoxDetailsButton href='/'>
                                         <GiAirplaneDeparture />
@@ -127,19 +130,19 @@ const Destiny = () => {
                         </D.DestinyBodyChild>
                         <D.DestinyBodyChild>
                             <D.DestinyChildBox>
-                                    <img src={berlim} alt='/' />
+                                    <img src={madrid} alt='/' />
                                     <D.DestinyChildBoxDetails>
                                         <h3 className='text-[#2564CF] text-lg font-semibold'>
-                                            Dubai
+                                            Madrid
                                         </h3>
                                         <div className='mb-4 text-[15px] text-[#555]'>
-                                            15 Jan 2023 - 20 Jan 2023
+                                            01 Mai 2023 - 20 Jul 2023
                                         </div>
                                         <div className='text-[15px] text-[#555]'>
                                             Econômica A partir de
                                         </div>
                                         <div className='text-[15px] text-[#333)'>
-                                            USD 2066
+                                            USD 999
                                         </div>
                                         <D.DestinyChildBoxDetailsButton href='/'>
                                         <GiAirplaneDeparture />
@@ -147,19 +150,19 @@ const Destiny = () => {
                                     </D.DestinyChildBoxDetails>
                             </D.DestinyChildBox>
                             <D.DestinyChildBox>
-                                <img src={berlim} alt='/' />
+                                <img src={bali} alt='/' />
                                 <D.DestinyChildBoxDetails>
                                     <h3 className='text-[#2564CF] text-lg font-semibold'>
-                                        Dubai
+                                        Bali
                                     </h3>
                                     <div className='mb-4 text-[15px] text-[#555]'>
-                                        15 Jan 2023 - 20 Jan 2023
+                                        18 Jan 2023 - 20 Fev 2023
                                     </div>
                                     <div className='text-[15px] text-[#555]'>
                                         Econômica A partir de
                                     </div>
                                     <div className='text-[15px] text-[#333)'>
-                                        USD 2066
+                                        USD 3500
                                     </div>
                                     <D.DestinyChildBoxDetailsButton href='/'>
                                         <GiAirplaneDeparture />
