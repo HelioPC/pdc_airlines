@@ -20,10 +20,68 @@ const Welcome = ({ title, description, background }) => {
     const [trip, setTrip] = useState('')
     const [origin, setOrigin] = useState('')
     const [destiny, setDestiny] = useState('')
+    const [origins, setOrigins] = useState([])
+    const [destinies, setDestinies] = useState([])
     const [date, setDate] = useState(null)
 
     useEffect(() => {
         Aos.init({ duration: 1500 })
+    }, [])
+    useEffect(() => {
+        setOrigins([
+            {
+                id: '1',
+                name: 'Luanda',
+                country: 'AO',
+            },
+            {
+                id: '2',
+                name: 'Dubai',
+                country: 'EAU',
+            },
+            {
+                id: '3',
+                name: 'New York',
+                country: 'USA',
+            },
+            {
+                id: '4',
+                name: 'Bali',
+                country: 'IN',
+            },
+            {
+                id: '5',
+                name: 'Lisboa',
+                country: 'PT',
+            },
+        ])
+        setDestinies([
+            {
+                id: '1',
+                name: 'Luanda',
+                country: 'AO',
+            },
+            {
+                id: '2',
+                name: 'Dubai',
+                country: 'EAU',
+            },
+            {
+                id: '3',
+                name: 'New York',
+                country: 'USA',
+            },
+            {
+                id: '4',
+                name: 'Bali',
+                country: 'IN',
+            },
+            {
+                id: '5',
+                name: 'Lisboa',
+                country: 'PT',
+            },
+        ])
     }, [])
 
     return (
@@ -71,9 +129,13 @@ const Welcome = ({ title, description, background }) => {
                             },
                         }}
                     >
-                        <MenuItem value='a'>Ida e volta</MenuItem>
-                        <MenuItem value='b'>Só ida</MenuItem>
-                        <MenuItem value='c'>Múltiplas cidades</MenuItem>
+                        {
+                            origins.map((o, index) => (
+                                <MenuItem value={o.id} key={index}>
+                                    {o.name}
+                                </MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
                 <FormControl
@@ -113,9 +175,13 @@ const Welcome = ({ title, description, background }) => {
                             },
                         }}
                     >
-                        <MenuItem value='a'>Ida e volta</MenuItem>
-                        <MenuItem value='b'>Só ida</MenuItem>
-                        <MenuItem value='c'>Múltiplas cidades</MenuItem>
+                        {
+                            destinies.map((d, index) => (
+                                <MenuItem value={d.id} key={index}>
+                                    {d.name}
+                                </MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

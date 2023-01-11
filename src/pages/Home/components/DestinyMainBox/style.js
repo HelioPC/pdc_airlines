@@ -2,7 +2,7 @@ import tw from 'tailwind-styled-components'
 import styled from 'styled-components'
 
 export const MainBox = tw.div`
-    md:w-1/2 w-full md:h-full h-[500px] bg-white rounded-[20px] md:shadow-[black_10px_10px_50px_0px] shadow-xl
+    md:w-1/2 w-full md:h-full h-[500px] bg-white rounded-[20px] shadow-xl
 `
 
 export const BoxWrapper = styled.div`

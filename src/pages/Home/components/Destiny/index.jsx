@@ -85,7 +85,7 @@ const Destiny = () => {
             <D.DestinyBody>
                 <D.DestinyBodyWrapper>
                     <DestinyMainBox />
-                    <div className='md:w-1/2 w-full md:h-full min-h-[650px] flex flex-col'>
+                    <div className='md:w-1/2 w-full md:h-full min-h-[650px] flex flex-col gap-2'>
                         <D.DestinyBodyChild>
                             <D.DestinyChildBox>
                                 <img src={berlim} alt='/' />

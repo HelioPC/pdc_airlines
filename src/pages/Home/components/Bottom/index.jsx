@@ -15,7 +15,7 @@ const Bottom = () => {
                             label='Endereço de e-mail'
                             id='outlined-basic'
                             sx={{
-                                minWidth: '250px',
+                                maxWidth: '250px',
                                 '& label.Mui-focused': {
                                     color: 'white',
                                 },
@@ -30,6 +30,11 @@ const Bottom = () => {
                                     '&.Mui-focused fieldset': {
                                         borderColor: 'white',
                                     },
+                                },
+                            }}
+                            InputLabelProps={{
+                                style: {
+                                    'color': 'white',
                                 },
                             }}
                         />

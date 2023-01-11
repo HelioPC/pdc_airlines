@@ -24,6 +24,10 @@ export const ItemText = styled.div`
         margin-bottom: 10px;
         color: #292827;
         text-align: center;
+
+        @media (max-width: 768px) {
+            font-size: 44px;
+        }
     }
 
     p {
@@ -31,6 +35,10 @@ export const ItemText = styled.div`
         line-height: 30px;
         color: #292827;
         text-align: center;
+
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
     }
 `
 
@@ -97,7 +105,6 @@ export const BoxButton = styled.a`
         &:hover {
             background: #0544AF;
             border-radius: 10px;
-            scale: 1.05;
         }
     }
 
@@ -108,7 +115,6 @@ export const BoxButton = styled.a`
             background: #0544AF;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
-            scale: 1.05;
         }
     }
 
