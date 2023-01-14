@@ -91,13 +91,13 @@ export const Box = styled.div`
     }
 `
 
-export const BoxButton = styled.a`
+export const BoxButton = styled.button`
     background: #2564CF;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     color: white;
-    cursor: pointer;
     padding: 10px;
     transition: all ease .5s;
 
