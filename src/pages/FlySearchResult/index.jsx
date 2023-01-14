@@ -10,6 +10,7 @@ import FlightDetails from './FlightDetails'
 import Modal from '../../components/Modal'
 import BookingForm from '../../components/BookingForm'
 import { useBooking } from '../../contexts/BookingContext'
+import SelectPlace from '../../components/SelectPlace'
 
 /*const LoadingIndicator = () => {
     const { promiseInProgress } = usePromiseTracker()
@@ -43,7 +44,7 @@ const FlySearchResult = () => {
         },
         {
             title: 'Selecione o seu lugar',
-            children: <div>Olá</div>,
+            children: <SelectPlace />,
         },
     ]
     const flightInfo = [

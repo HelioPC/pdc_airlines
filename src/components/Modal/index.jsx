@@ -16,6 +16,7 @@ const Modal = (props) => {
             open={open} fullWidth
             onClose={handleClose}
             maxWidth={maxWidth === undefined ? 'sm' : maxWidth}
+            scroll='body'
         >
             <DialogTitle>
                 <div className='flex justify-between items-center'>
