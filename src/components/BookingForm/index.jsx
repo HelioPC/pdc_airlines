@@ -6,8 +6,10 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import { useBooking } from '../../contexts/BookingContext'
 
 const BookingForm = () => {
+    const { dispatch } = useBooking()
     const [documentType, setDocumentType] = useState('')
     const options = [
         { label: 'Passaporte', value: 'passport' },
@@ -78,7 +80,10 @@ const BookingForm = () => {
                     variant='contained'
                     color='primary'
                     type='Submit'
-                    disabled
+                    onClick={() => dispatch({
+                        type: 'setCurrentStep',
+                        payload: 1,
+                    })}
                 >
                     Escolher lugar
                 </Button>

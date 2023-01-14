@@ -9,6 +9,7 @@ import logo from '../../assets/images/logo.png'
 import FlightDetails from './FlightDetails'
 import Modal from '../../components/Modal'
 import BookingForm from '../../components/BookingForm'
+import { useBooking } from '../../contexts/BookingContext'
 
 /*const LoadingIndicator = () => {
     const { promiseInProgress } = usePromiseTracker()
@@ -34,6 +35,17 @@ const FlySearchResult = () => {
     //const [load, setLoad] = useState(true)
     const [showDrawer, setShowDrawer] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const { state } = useBooking()
+    const modalSteps = [
+        {
+            title: 'Dados pessoais',
+            children: <BookingForm />,
+        },
+        {
+            title: 'Selecione o seu lugar',
+            children: <div>Olá</div>,
+        },
+    ]
     const flightInfo = [
         {
             origin: {
@@ -213,9 +225,9 @@ const FlySearchResult = () => {
             <Modal
                 open={showModal}
                 handleClose={() => setShowModal(false)}
-                title='Formulário do cliente'
+                title={ modalSteps[state.currentStep].title }
             >
-                <BookingForm />
+                { modalSteps[state.currentStep].children }
             </Modal>
         </F.FlySearchContainer>
     )
