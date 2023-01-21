@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -6,14 +7,31 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { useBooking } from '../../contexts/BookingContext'
+import { AlertSuccess } from '../../utils/Alert'
 
-const BookingForm = () => {
-    const { dispatch } = useBooking()
+const BookingForm = (props) => {
     const [documentType, setDocumentType] = useState('')
     const options = [
         { label: 'Passaporte', value: 'passport' },
     ]
+    const { closeModal } = props
+
+    console.log(closeModal)
+
+    const handleReserve = () => {
+        if (documentType === '') {
+            return
+        }
+
+        closeModal()
+
+        AlertSuccess({
+            title: 'Successo',
+            description: 'Reserva efetuada com sucesso ✅',
+            confirm: () => window.location.reload(),
+            message: 'Baixe o seu recibo',
+        })
+    }
 
     return (
         <Grid item container spacing={1} justify='center'>
@@ -80,16 +98,17 @@ const BookingForm = () => {
                     variant='contained'
                     color='primary'
                     type='Submit'
-                    onClick={() => dispatch({
-                        type: 'setCurrentStep',
-                        payload: 1,
-                    })}
+                    onClick={handleReserve}
                 >
                     Escolher lugar
                 </Button>
             </Grid>
         </Grid>
     )
+}
+
+BookingForm.propTypes = {
+    closeModal: PropTypes.func.isRequired,
 }
 
 export default BookingForm

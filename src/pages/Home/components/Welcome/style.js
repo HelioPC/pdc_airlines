@@ -3,13 +3,6 @@ import styled from 'styled-components'
 
 export const Wrap = styled.div`
     width: 100vw;
-    min-height: 100vh;
-    padding: 10px 30px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -17,12 +10,12 @@ export const Wrap = styled.div`
 `
 
 export const ItemText = styled.div`
-    padding: 15vh 0px 0px;
+    padding: 1vh 0px 0px;
 
     h1 {
         font-size: 64px;
         margin-bottom: 10px;
-        color: #292827;
+        color: white;
         text-align: center;
 
         @media (max-width: 768px) {
@@ -33,7 +26,7 @@ export const ItemText = styled.div`
     p {
         font-size: 18px;
         line-height: 30px;
-        color: #292827;
+        color: white;
         text-align: center;
 
         @media (max-width: 768px) {
