@@ -4,7 +4,7 @@ import tw from 'tailwind-styled-components'
 import bg from '../../../../assets/images/bg-view.png'
 
 export const BottomContainer = tw.div`
-    min-h-screen w-screen py-20 px-2
+    min-h-[500px] w-screen py-0 px-2
 `
 
 export const BottomNewsletter = tw.div`
@@ -40,4 +40,10 @@ export const BottomNewsletterContent = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 30px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        align-items: center;
+        padding: 10px;
+    }
 `
