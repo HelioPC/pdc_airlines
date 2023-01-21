@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import Drawer from '@mui/material/Drawer'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { GiAirplaneDeparture } from 'react-icons/gi'
-import { MdCheckCircle, MdLuggage, MdLunchDining } from 'react-icons/md'
-//import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
-//import { ThreeDots } from 'react-loader-spinner'
+import { MdCheckCircle } from 'react-icons/md'
 
 import * as F from './style'
 import logo from '../../assets/images/logo.png'
@@ -12,29 +11,9 @@ import Modal from '../../components/Modal'
 import BookingForm from '../../components/BookingForm'
 import { useBooking } from '../../contexts/BookingContext'
 import SelectPlace from '../../components/SelectPlace'
-
-/*const LoadingIndicator = () => {
-    const { promiseInProgress } = usePromiseTracker()
-
-    return (
-        promiseInProgress &&
-        <ThreeDots
-            height='80'
-            width='80'
-            radius='9'
-            color='#282936'
-            ariaLabel='three-dots-loading'
-            wrapperStyle={{}}
-            wrapperClassName=''
-            visible={true}
-        />
-    )
-}*/
+import { flightInfo } from '../../assets/dummy'
 
 const FlySearchResult = () => {
-    //const storage = localStorage.getItem('pdcAirlineUAN2022')
-    //const flySearchResults = JSON.parse(storage)
-    //const [load, setLoad] = useState(true)
     const [showDrawer, setShowDrawer] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const { state } = useBooking()
@@ -53,91 +32,6 @@ const FlySearchResult = () => {
             children: <BookingForm closeModal={closeModal} />,
         },
     ]
-    const flightInfo = [
-        {
-            origin: {
-                name: 'Luanda',
-                shortName: 'LAD',
-                time: '09:35',
-            },
-            destiny: {
-                name: 'Lisboa',
-                shortName: 'LIS',
-                time: '16:50',
-            },
-            duration: '7h 15min',
-            scale: false,
-            hasEconomic: true,
-            economic: {
-                price: '390.000 kz',
-            },
-            hasExecutive: true,
-            executive: {
-                price: '990.000 kz',
-            },
-            hasRates: true,
-        },
-        {
-            origin: {
-                name: 'Luanda',
-                shortName: 'LAD',
-                time: '09:35',
-            },
-            destiny: {
-                name: 'Lisboa',
-                shortName: 'LIS',
-                time: '16:50',
-            },
-            duration: '7h 15min',
-            scale: false,
-            hasEconomic: true,
-            economic: {
-                price: '390.000 kz',
-            },
-            hasExecutive: true,
-            executive: {
-                price: '990.000 kz',
-            },
-        },
-        {
-            origin: {
-                name: 'Luanda',
-                shortName: 'LAD',
-                time: '09:35',
-            },
-            destiny: {
-                name: 'Lisboa',
-                shortName: 'LIS',
-                time: '16:50',
-            },
-            duration: '7h 15min',
-            scale: false,
-            hasEconomic: true,
-            economic: {
-                price: '390.000 kz',
-            },
-            hasExecutive: true,
-            executive: {
-                price: '990.000 kz',
-            },
-        },
-    ]
-
-    /*const FetchTest = async () => {
-        await new Promise(res => setTimeout(res, 5000))
-        setLoad(true)
-    }
-
-    useEffect(() => {
-        const onLoad = () => {
-            trackPromise(
-                FetchTest().then(() => {
-                    setLoad(false)
-                }),
-            )
-        }
-        onLoad()
-    }, [])*/
 
     const toggleDrawer = (open) => (event) => {
         if (
@@ -157,10 +51,29 @@ const FlySearchResult = () => {
             </F.FlySearchHeader>
             <F.FlySearchBody>
                 {flightInfo.map((flight, index) => {
-                    const [showRates, setShowRates] = useState(false)
+                    const [showEconomicRates, setShowEconomicRates] = useState(false)
+                    const [showExecutiveRates, setShowExecutiveRates] = useState(false)
 
-                    const toggleRates = () => {
-                        setShowRates(!showRates)
+                    const toggleEconomicRates = () => {
+                        if(!showEconomicRates) {
+                            if(showExecutiveRates) {
+                                setShowExecutiveRates(false)
+                                setShowEconomicRates(true)
+                            } else {
+                                setShowEconomicRates(true)
+                            }
+                        } else setShowEconomicRates(false)
+                    }
+
+                    const toggleExecutiveRates = () => {
+                        if(!showExecutiveRates) {
+                            if(showEconomicRates) {
+                                setShowEconomicRates(false)
+                                setShowExecutiveRates(true)
+                            } else {
+                                setShowExecutiveRates(true)
+                            }
+                        } else setShowExecutiveRates(false)
                     }
 
                     return (
@@ -200,7 +113,7 @@ const FlySearchResult = () => {
                                                     gap-5 bg-white shadow-lg hover:shadow-2xl hover:rounded-lg
                                                     duration-300 min-h-[50px] cursor-pointer px-4 lg:py-5 py-2
                                                 `}
-                                                    onClick={() => toggleRates()}
+                                                    onClick={() => toggleEconomicRates()}
                                                 >
                                                     <p className='font-bold text-xs'>Económica</p>
                                                     <span className='text-xs font-bold text-[#666666]'>
@@ -217,7 +130,7 @@ const FlySearchResult = () => {
                                                         gap-5 bg-white shadow-lg hover:shadow-2xl hover:rounded-lg
                                                         duration-300 min-h-[50px] cursor-pointer px-4 lg:py-5 py-2
                                                     `}
-                                                    onClick={() => toggleRates()}
+                                                    onClick={() => toggleExecutiveRates()}
                                                 >
                                                     <p className='font-bold text-xs'>Executiva</p>
                                                     <span className='text-xs font-bold text-[#666666]'>
@@ -231,45 +144,49 @@ const FlySearchResult = () => {
                             </F.FlySearchContent>
 
                             {
-                                showRates &&
+                                (showEconomicRates) &&
                                 (
                                     <F.FlyRatesContent>
                                         {
-                                            [1, 2, 3].map((i) => (
+                                            flight.economic.rates.map((rate, i) => (
                                                 <F.FlyRatesCard className='shadow-xl' key={i}>
                                                     <F.FlyRatesCardHeader>
-                                                        <h2 className='text-lg'>Discount</h2>
+                                                        <h2 className='text-lg'>{rate.title}</h2>
                                                         <span className='font-bold text-xs text-[#2564CF]'>
                                                             Condições tarifárias
                                                         </span>
                                                     </F.FlyRatesCardHeader>
                                                     <F.FlyRatesCardBody>
-                                                        <div className='flex justify-between'>
-                                                            <div className='flex items-center'>
-                                                                <MdLunchDining />
-                                                                <span className='text-sm'>
-                                                                    Refeição
-                                                                </span>
-                                                            </div>
-                                                            <MdCheckCircle color='#25a30c' />
-                                                        </div>
-                                                        <div className='flex justify-between'>
-                                                            <div className='flex items-center'>
-                                                                <MdLuggage />
-                                                                <span className='text-sm'>
-                                                                    Bagagem
-                                                                </span>
-                                                            </div>
-                                                            <MdCheckCircle color='#25a30c' />
-                                                        </div>
+                                                        {
+                                                            rate.bonus.map((b, i) => (
+                                                                <div className='flex justify-between' key={i}>
+                                                                    <div className='flex items-center'>
+                                                                        {b.icon}
+                                                                        <span className='text-sm'>
+                                                                            {b.name}
+                                                                        </span>
+                                                                    </div>
+                                                                    {
+                                                                        b.present ? (
+                                                                            <MdCheckCircle color='#25a30c' />
+                                                                        ) : (
+                                                                            <AiFillCloseCircle color='#a30c0c' />
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                            ))
+                                                        }
                                                     </F.FlyRatesCardBody>
                                                     <F.FlyRatesCardBottom>
                                                         <span className='text-sm font-bold'>
-                                                            {flight.hasEconomic ? flight.economic.price : flight.executive.price}
+                                                            {flight.economic.rawPrice + flight.economic.rawPrice * rate.percentage} kz
                                                         </span>
                                                         <button
                                                             className='text-white bg-[#2564CF] p-2 border-none rounded-md'
-                                                            onClick={() => setShowModal(true)}
+                                                            onClick={() => {
+                                                                setShowModal(true)
+                                                                console.log(flight, rate)
+                                                            }}
                                                         >
                                                             Selecionar
                                                         </button>
@@ -278,6 +195,62 @@ const FlySearchResult = () => {
                                             ))
                                         }
                                     </F.FlyRatesContent>
+                                )
+                            }
+                            {
+                                (showExecutiveRates) &&
+                                (
+                                    (
+                                        <F.FlyRatesContent>
+                                            {
+                                                flight.executive.rates.map((rate, i) => (
+                                                    <F.FlyRatesCard className='shadow-xl' key={i}>
+                                                        <F.FlyRatesCardHeader>
+                                                            <h2 className='text-lg'>{rate.title}</h2>
+                                                            <span className='font-bold text-xs text-[#2564CF]'>
+                                                                Condições tarifárias
+                                                            </span>
+                                                        </F.FlyRatesCardHeader>
+                                                        <F.FlyRatesCardBody>
+                                                            {
+                                                                rate.bonus.map((b, i) => (
+                                                                    <div className='flex justify-between' key={i}>
+                                                                        <div className='flex items-center'>
+                                                                            {b.icon}
+                                                                            <span className='text-sm'>
+                                                                                {b.name}
+                                                                            </span>
+                                                                        </div>
+                                                                        {
+                                                                            b.present ? (
+                                                                                <MdCheckCircle color='#25a30c' />
+                                                                            ) : (
+                                                                                <AiFillCloseCircle color='#a30c0c' />
+                                                                            )
+                                                                        }
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </F.FlyRatesCardBody>
+                                                        <F.FlyRatesCardBottom>
+                                                            <span className='text-sm font-bold'>
+                                                                {flight.executive.rawPrice + flight.executive.rawPrice * rate.percentage} kz
+                                                            </span>
+                                                            <button
+                                                                className='text-white bg-[#2564CF] p-2 border-none rounded-md'
+                                                                onClick={() => {
+                                                                    setShowModal(true)
+                                                                    console.log(flight, rate)
+                                                                }}
+                                                            >
+                                                                Selecionar
+                                                            </button>
+                                                        </F.FlyRatesCardBottom>
+                                                    </F.FlyRatesCard>
+                                                ))
+                                            }
+                                        </F.FlyRatesContent>
+                                    )
                                 )
                             }
                         </div>

@@ -98,7 +98,6 @@ export const FlySearchContentBody = styled.div`
 
 export const FlyRatesContent = styled.div`
     width: 100%;
-    min-height: 200px;
     display: flex;
     padding: 20px 0;
     gap: 10px;
@@ -111,7 +110,6 @@ export const FlyRatesContent = styled.div`
 
 export const FlyRatesCard = styled.div`
     width: 300px;
-    min-height: 150px;
     display: flex;
     padding: 10px;
     flex-direction: column;
@@ -146,6 +144,7 @@ export const FlyRatesCardBottom = styled.div`
     width: 100%;
     height: 50px;
     padding: 5px;
+    margin: auto 0 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
