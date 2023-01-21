@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from 'react'
+import Tooltip from '@mui/material/Tooltip'
 import PropTypes from 'prop-types'
 import { AiOutlineLogin } from 'react-icons/ai'
 import { MdOutlinePersonOutline } from 'react-icons/md'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import Logo from '../../assets/images/logo.png'
 import { useUser } from '../../contexts/UserContext'
-import { Tooltip } from '@mui/material'
+import Modal from '../Modal'
+import Logo from '../../assets/images/logo.png'
+import MemberForm from '../MemberForm'
 
 const NavbarItem = (props) => {
-    const { title, url, classProp } = props
+    const { title, url, classProp, button } = props
+    const navigate = useNavigate()
+
     return (
         <li className={`mx-4 ${classProp}`}>
-            <NavLink
-                to={url}
-                className='cursor-pointer duration-500 font-bold text-white'
-            >
-                {title}
-            </NavLink>
+            {
+                button ? (
+                    <button
+                        className='cursor-pointer duration-500 font-bold text-white bg-transparent border-none'
+                        onClick={() => navigate(url)}
+                    >
+                        {title}
+                    </button>
+                ) : (
+                    <a
+                        href={url}
+                        className='cursor-pointer duration-500 font-bold text-white'
+                    >
+                        {title}
+                    </a>
+                )
+            }
         </li>
     )
 }
@@ -26,17 +41,22 @@ NavbarItem.propTypes = {
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     classProp: PropTypes.string,
+    button: PropTypes.bool.isRequired,
 }
 
 const Header = () => {
     const { validUser } = useUser()
     const [color, setColor] = useState(true)
+    const [showModal, setShowModal] = useState(false)
     const headerElements = [
-        { title: 'Descobra', url: '/' },
-        { title: 'Reservar', url: '/' },
-        { title: 'Destinos', url: '/' },
-        { title: 'Membro PDC', url: '/' },
+        { title: 'Descubra', url: '/#destiny', button: false },
+        { title: 'Subscreva', url: '/#news', button: false },
+        { title: 'Membro PDC', url: '/', button: true },
     ]
+
+    const closeModal = () => {
+        setShowModal(false)
+    }
 
     useEffect(() => {
         const scrollListener = () => {
@@ -51,7 +71,7 @@ const Header = () => {
     }, [])
 
     return (
-        <header className={`h-20 w-full flex items-center md:justify-start justify-between text-white py-4 sm:px-32 px-5 gap-x-5 z-10 duration-500 ${color ? 'bg-transparent' : 'bg-[rgba(0,0,0,.7)] backdrop-blur-md'}`}>
+        <header className={`h-20 w-full flex items-center md:justify-start justify-between text-white py-4 md:px-32 px-5 gap-x-5 z-10 duration-500 ${color ? 'bg-transparent' : 'bg-[rgba(0,0,0,.7)] backdrop-blur-md'}`}>
             <div className='w-full'>
                 <div className='w-full flex'>
                     <div
@@ -61,14 +81,14 @@ const Header = () => {
                     </div>
                     <ul
                         className='
-                            md:flex hidden list-none flex-row
+                            sm:flex hidden list-none flex-row
                             justify-space-between items-center
                             flex-initial w-full
                         '
                     >
                         {
                             headerElements.map((item, index) => (
-                                <NavbarItem title={item.title} url={item.url} key={index} />
+                                <NavbarItem title={item.title} url={item.url} key={index} button={item.button} />
                             ))
                         }
                         <li className={`
@@ -77,7 +97,9 @@ const Header = () => {
                         `}>
                             {validUser && (
                                 <Tooltip placement='bottom' title='Tornar-se membro'>
-                                    <button className='border-none bg-transparent'>
+                                    <button className='border-none bg-transparent'
+                                        onClick={() => setShowModal(true)}
+                                    >
                                         <MdOutlinePersonOutline size={20} className='text-white duration-500' />
                                     </button>
                                 </Tooltip>
@@ -89,6 +111,14 @@ const Header = () => {
                     </ul>
                 </div>
             </div>
+            <Modal
+                title='Faça parte da família'
+                open={showModal}
+                maxWidth='lg'
+                handleClose={() => setShowModal(false)}
+            >
+                <MemberForm closeModal={closeModal} />
+            </Modal>
         </header>
     )
 }

@@ -25,7 +25,7 @@ const Destiny = () => {
     )
 
     return (
-        <D.DestinyContainer>
+        <D.DestinyContainer id='destiny'>
             <D.DestinyHeader>
                 <h2>Encontre ótimas tarifas</h2>
 

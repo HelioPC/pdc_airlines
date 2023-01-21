@@ -20,6 +20,7 @@
     "react-horizontal-scrolling-menu": "^3.2.3",
     "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
+    "react-phone-input-2": "^2.15.1",
     "react-promise-tracker": "^2.1.1",
     "react-router-dom": "^6.6.1",
     "sass": "^1.57.1",

@@ -7,6 +7,7 @@
 	font-family: Verdana, Geneva, sans-serif !important;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
+	scroll-behavior: smooth;
 }
 
 body {

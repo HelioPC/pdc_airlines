@@ -5,7 +5,7 @@ import * as B from './style'
 
 const Bottom = () => {
     return (
-        <B.BottomContainer>
+        <B.BottomContainer id='news'>
             <B.BottomNewsletter>
                 <B.BottomNewsletterBody>
                     <B.BottomNewsletterContent>
