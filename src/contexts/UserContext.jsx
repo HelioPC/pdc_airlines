@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 
 const initialUser = {
     id: 0,
-    id_cinema: '',
     name: '',
     email: '',
-    password: '',
-    nivel: '',
+    state: 0,
 }
 
 const UserContext = createContext(undefined)
@@ -18,6 +16,8 @@ const userReducer = (user, action) => {
             return action.payload
         case 'clearUser':
             return initialUser
+        case 'setState':
+            return {...user, state: action.payload}
         default:
             return user
     }

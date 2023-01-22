@@ -12,10 +12,10 @@ const Footer = () => {
                     >
                         <img src={logo} alt='logo' className='h-14 w-14' />
                     </div>
-                    <span className='text-white text-xs'>© 2022 Cineticket, Inc.</span>
+                    <span className='text-white text-xs'>© 2022 PDC - Airlines, Inc.</span>
                 </div>
 
-                <h1 className='text-white text-xl font-light'>Powered by Grupo ELLI-4</h1>
+                <h1 className='text-white text-lg font-light'>Powered by Grupo ELLI-4</h1>
             </div>
         </footer>
     )

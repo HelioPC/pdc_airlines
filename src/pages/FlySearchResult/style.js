@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
 
 export const FlySearchContainer = tw.div`
-    min-h-screen w-screen min-w-[350px] py-20 px-2
+    min-h-screen w-screen min-w-[350px] pt-20 pb-0 px-0
 `
 
 export const FlySearchHeader = styled.div`

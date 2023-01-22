@@ -12,10 +12,12 @@ import BookingForm from '../../components/BookingForm'
 import { useBooking } from '../../contexts/BookingContext'
 import SelectPlace from '../../components/SelectPlace'
 import { flightInfo } from '../../assets/dummy'
+import Footer from '../../components/Footer'
 
 const FlySearchResult = () => {
     const [showDrawer, setShowDrawer] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [details, setDetails] = useState({})
     const { state } = useBooking()
 
     const closeModal = () => {
@@ -42,6 +44,11 @@ const FlySearchResult = () => {
             return
         }
         setShowDrawer(!open)
+    }
+
+    const toggleDetails = (info, open) => {
+        setDetails(info)
+        setShowDrawer(open)
     }
 
     return (
@@ -95,7 +102,7 @@ const FlySearchResult = () => {
                                         </div>
                                         <button
                                             className='md:mx-4 mx-2 text-[#2564CF] text-[14px] font-semibold border-none bg-transparent'
-                                            onClick={() => setShowDrawer(true)}
+                                            onClick={() => toggleDetails(flight, true)}
                                         >
                                             Detalhes
                                         </button>
@@ -262,7 +269,7 @@ const FlySearchResult = () => {
                 open={showDrawer}
                 onClose={toggleDrawer(true)}
             >
-                <FlightDetails />
+                <FlightDetails flight={details} />
             </Drawer>
             <Modal
                 open={showModal}
@@ -271,6 +278,7 @@ const FlySearchResult = () => {
             >
                 {modalSteps[state.currentStep].children}
             </Modal>
+            <Footer />
         </F.FlySearchContainer>
     )
 }

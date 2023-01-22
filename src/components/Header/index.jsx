@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../contexts/UserContext'
 import Modal from '../Modal'
 import Logo from '../../assets/images/logo.png'
-import MemberForm from '../MemberForm'
+import MemberForm, { MemberLogin } from '../MemberForm'
 
 const NavbarItem = (props) => {
     const { title, url, classProp, button } = props
@@ -48,15 +48,30 @@ const Header = () => {
     const { validUser } = useUser()
     const [color, setColor] = useState(true)
     const [showModal, setShowModal] = useState(false)
+    const { user } = useUser()
     const headerElements = [
         { title: 'Descubra', url: '/#destiny', button: false },
         { title: 'Subscreva', url: '/#news', button: false },
         { title: 'Membro PDC', url: '/', button: true },
+        { title: 'Check-in', url: '/', button: false },
     ]
 
     const closeModal = () => {
         setShowModal(false)
     }
+
+    const modalSteps = [
+        {
+            title: 'Faça parte da família',
+            width: 'lg',
+            children: <MemberForm closeModal={closeModal} />,
+        },
+        {
+            title: 'Login',
+            width: 'sm',
+            children: <MemberLogin closeModal={closeModal} />,
+        },
+    ]
 
     useEffect(() => {
         const scrollListener = () => {
@@ -71,7 +86,7 @@ const Header = () => {
     }, [])
 
     return (
-        <header className={`h-20 w-full flex items-center md:justify-start justify-between text-white py-4 md:px-32 px-5 gap-x-5 z-10 duration-500 ${color ? 'bg-transparent' : 'bg-[rgba(0,0,0,.7)] backdrop-blur-md'}`}>
+        <header className={`h-20 w-full flex items-center md:justify-start justify-between text-white py-4 md:px-20 px-5 gap-x-5 z-10 duration-500 ${color ? 'bg-transparent' : 'bg-[rgba(0,0,0,.7)] backdrop-blur-md'}`}>
             <div className='w-full'>
                 <div className='w-full flex'>
                     <div
@@ -112,12 +127,12 @@ const Header = () => {
                 </div>
             </div>
             <Modal
-                title='Faça parte da família'
+                title={modalSteps[user.state].title}
                 open={showModal}
-                maxWidth='lg'
+                maxWidth={modalSteps[user.state].width}
                 handleClose={() => setShowModal(false)}
             >
-                <MemberForm closeModal={closeModal} />
+                {modalSteps[user.state].children}
             </Modal>
         </header>
     )

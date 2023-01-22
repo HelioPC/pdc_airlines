@@ -17,11 +17,13 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
 import { AlertSuccess } from '../../utils/Alert'
+import { useUser } from '../../contexts/UserContext'
 
 const MemberForm = (props) => {
     const [documentType, setDocumentType] = useState('')
     const [genre, setGenre] = useState('')
     const [date, setDate] = useState()
+    const { dispatch } = useUser()
     const options = [
         { label: 'Passaporte', value: 'passport' },
     ]
@@ -146,7 +148,22 @@ const MemberForm = (props) => {
                     </RadioGroup>
                 </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} md={12} marginTop={5}>
+            <Grid item marginTop={3}>
+                <Button
+                    variant='contained'
+                    type='Submit'
+                    style={{
+                        backgroundColor: 'black',
+                    }}
+                    onClick={() => dispatch({
+                        type: 'setState',
+                        payload: 1,
+                    })}
+                >
+                    Já sou membro
+                </Button>
+            </Grid>
+            <Grid item marginTop={3}>
                 <Button
                     variant='contained'
                     color='primary'
@@ -161,6 +178,47 @@ const MemberForm = (props) => {
 }
 
 MemberForm.propTypes = {
+    closeModal: PropTypes.func.isRequired,
+}
+
+export const MemberLogin = (props) => {
+    const { closeModal } = props
+
+    return (
+        <Grid item container spacing={1} justify='center'>
+            <Grid item xs={12} sm={12} md={12}>
+                <TextField
+                    label='Email'
+                    variant='outlined'
+                    fullWidth
+                    name='email'
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+                <TextField
+                    label='Pin'
+                    variant='outlined'
+                    fullWidth
+                    name='pin'
+                    type='password'
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} marginTop={3}>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    type='Submit'
+                    fullWidth
+                    onClick={closeModal}
+                >
+                    Login
+                </Button>
+            </Grid>
+        </Grid>
+    )
+}
+
+MemberLogin.propTypes = {
     closeModal: PropTypes.func.isRequired,
 }
 
