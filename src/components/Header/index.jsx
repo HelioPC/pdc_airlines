@@ -5,10 +5,11 @@ import { AiOutlineLogin } from 'react-icons/ai'
 import { MdOutlinePersonOutline } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
-import { useUser } from '../../contexts/UserContext'
 import Modal from '../Modal'
 import Logo from '../../assets/images/logo.png'
-import MemberForm, { MemberLogin } from '../MemberForm'
+import MemberForm from '../MemberForm'
+import MemberLogin from '../MemberLogin'
+import { useUser } from '../../contexts/UserContext'
 
 const NavbarItem = (props) => {
     const { title, url, classProp, button } = props
@@ -132,7 +133,7 @@ const Header = () => {
                 maxWidth={modalSteps[user.state].width}
                 handleClose={() => setShowModal(false)}
             >
-                {modalSteps[user.state].children}
+                <MemberForm closeModal={closeModal} />
             </Modal>
         </header>
     )
