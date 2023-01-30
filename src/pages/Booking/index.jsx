@@ -6,14 +6,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import PI from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { AlertSuccess } from '../../utils/Alert'
+import { AlertError, AlertSuccess } from '../../utils/Alert'
 
 
 
 import { Tooltip } from '@mui/material'
 import { BsPlusCircleFill } from 'react-icons/bs'
+import { MdDelete } from 'react-icons/md'
 import styled from 'styled-components'
 import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import Logo from '../../assets/images/logo.png'
 
 const ReactPhoneInput = PI.default ? PI.default : PI
 
@@ -59,7 +62,7 @@ width: 100%;
 const FloatingAddButton = ({ onClick, title }) => {
     return (
         <Tooltip title={title} arrow placement='top'>
-            <button className='fixed bottom-10 right-20 flex duration-500 border-none' onClick={onClick}>
+            <button className='fixed bottom-10 right-10 flex duration-500 border-none bg-transparent' onClick={onClick}>
                 <BsPlusCircleFill size={45} />
             </button>
         </Tooltip>
@@ -75,9 +78,26 @@ const Booking = () => {
     const [telefone, setTelefone] = useState(0)
     const [data, setData] = useState('')
     const [disable, setDisable] = useState(true)
+    const url = useParams()
 
     const addUser = () => {
         if (nome === '' || titulo === '' || email === '' || sobreNome === '' || telefone === '' || data === '') return
+
+        var repeated = false
+
+        clients.map((c) => {
+            if (c.email === email || c.telefone === telefone) {
+                repeated = true
+                AlertError({
+                    title: 'Erro',
+                    description: 'O identificador deste utilizador já existe',
+                })
+                return
+            }
+        })
+
+        if (repeated) return
+
         setClients((clients) => [...clients, {
             nome: nome,
             email: email,
@@ -89,12 +109,12 @@ const Booking = () => {
     }
 
     useEffect(() => {
-        setDisable(clients.length === 0)
+        setDisable(clients.length !== url.id)
     }, [clients])
 
     const handleBooking = () => {
         const json = {}
-        
+
         clients.map((c, i) => {
             json[`nome${i}`] = c.nome
             json[`sobrenome${i}`] = c.sobrenome
@@ -105,7 +125,7 @@ const Booking = () => {
         })
 
         console.log(json)
-        
+
         AlertSuccess({
             title: 'Sucesso',
             description: 'A compra foi concluida com sucesso',
@@ -115,8 +135,14 @@ const Booking = () => {
     return (
         <Wrap>
             <div className='w-full min-h-screen bg-white text-black p-5'>
-                <div className='w-full mb-20'>
-                    <h1>Voe connosco</h1>
+                <div className='w-full flex items-center mb-20'>
+                    <a
+                        href='/'
+                        className='p-3 rounded-full cursor-pointer'
+                    >
+                        <img src={Logo} alt='logo' className='w-20 h-full' />
+                    </a>
+                    <h1>Preencha os seus dados</h1>
                 </div>
 
                 {
@@ -126,12 +152,35 @@ const Booking = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>
-                                            Nome
+                                            <p className='font-bold'>
+                                                Nome
+                                            </p>
                                         </TableCell>
-                                        <TableCell>Sobrenome</TableCell>
-                                        <TableCell>Telefone</TableCell>
-                                        <TableCell>Nascido</TableCell>
-                                        <TableCell>E-mail</TableCell>
+                                        <TableCell>
+                                            <p className='font-bold'>
+                                                Sobrenome
+                                            </p>
+                                        </TableCell>
+                                        <TableCell>
+                                            <p className='font-bold'>
+                                                Telefone
+                                            </p>
+                                        </TableCell>
+                                        <TableCell>
+                                            <p className='font-bold'>
+                                                Nascido
+                                            </p>
+                                        </TableCell>
+                                        <TableCell>
+                                            <p className='font-bold'>
+                                                E-mail
+                                            </p>
+                                        </TableCell>
+                                        <TableCell>
+                                            <p className='font-bold'>
+                                                Remover
+                                            </p>
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -143,8 +192,23 @@ const Booking = () => {
                                                 </TableCell>
                                                 <TableCell>{c.sobrenome}</TableCell>
                                                 <TableCell>{c.telefone}</TableCell>
-                                                <TableCell>{c.data}</TableCell>
+                                                <TableCell sx={{ minWidth: 150 }}>
+                                                    {c.data}
+                                                </TableCell>
                                                 <TableCell>{c.email}</TableCell>
+                                                <TableCell>
+                                                    <Tooltip title={`Remover ${c.nome}`} arrow placement='top'>
+                                                        <button
+                                                            className='border-none shadow-none bg-transparent'
+                                                            onClick={() => {
+                                                            }}
+                                                        >
+                                                            <MdDelete
+                                                                size={20} className='cursor-pointer'
+                                                            />
+                                                        </button>
+                                                    </Tooltip>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     }
@@ -156,26 +220,26 @@ const Booking = () => {
 
                 <Grid item container spacing={3} justify='center'>
                     <Grid item xs={12} sm={6} md={4}>
-                    <FormControl fullWidth variant='outlined'>
-                    <InputLabel id='demo-simple-select-outlined-label'>
-                        Título
-                    </InputLabel>
-                    <Select
-                        labelId='demo-simple-select-outlined-label'
-                        id='demo-simple-select-outlined'
-                        label='Título'
-                        name='occupation'
-                        value={titulo}
-                        onChange={(e) => setTitulo(e.target.value)}
-                    >
-                        <MenuItem value='sr'>
-                                Srº
-                            </MenuItem>
-                            <MenuItem value='sra'>
-                                Srª
-                            </MenuItem>
-                    </Select>
-                </FormControl>
+                        <FormControl fullWidth variant='outlined'>
+                            <InputLabel id='demo-simple-select-outlined-label'>
+                                Título
+                            </InputLabel>
+                            <Select
+                                labelId='demo-simple-select-outlined-label'
+                                id='demo-simple-select-outlined'
+                                label='Título'
+                                name='occupation'
+                                value={titulo}
+                                onChange={(e) => setTitulo(e.target.value)}
+                            >
+                                <MenuItem value='sr'>
+                                    Srº
+                                </MenuItem>
+                                <MenuItem value='sra'>
+                                    Srª
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <TextField
@@ -208,55 +272,55 @@ const Booking = () => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
-                    <ReactPhoneInput
-                    inputStyle={{
-                        width: '100%',
-                        height: '57px',
-                    }}
-                    inputProps={{
-                        name: 'phone',
-                        required: true,
-                        autoFocus: true,
-                      }}
-                    placeholder='(+244) 933 470 417'
-                    specialLabel={''}
-                    country={'ao'}
-                    value={telefone}
-                    onChange={(n) => setTelefone(n)}
-                />
+                        <ReactPhoneInput
+                            inputStyle={{
+                                width: '100%',
+                                height: '57px',
+                            }}
+                            inputProps={{
+                                name: 'phone',
+                                required: true,
+                                autoFocus: true,
+                            }}
+                            placeholder='(+244) 933 470 417'
+                            specialLabel={''}
+                            country={'ao'}
+                            value={telefone}
+                            onChange={(n) => setTelefone(n)}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            label='Data'
-                            inputFormat='YYYY/MM/DD'
-                            value={data}
-                            onChange={(newValue) => {
-                                setData(`${newValue.$y}-${newValue.$M > 9 ? '' : '0'}${newValue.$M + 1}-${newValue.$D}`)
-                            }}
-                            maxDate='2005/01/01'
-                            renderInput={(params) => <TextField {...params} fullWidth sx={{
-                                '& label.Mui-focused': {
-                                    // color: 'white',
-                                },
-                                '& .MuiInput-underline:after': {
-                                    borderBottomColor: 'yellow',
-                                },
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'white',
-                                        borderRadius: 0,
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label='Data'
+                                inputFormat='YYYY/MM/DD'
+                                value={data}
+                                onChange={(newValue) => {
+                                    setData(`${newValue.$y}-${newValue.$M > 9 ? '' : '0'}${newValue.$M + 1}-${newValue.$D > 9 ? '' : '0'}${newValue.$D}`)
+                                }}
+                                maxDate='2005/01/01'
+                                renderInput={(params) => <TextField {...params} fullWidth sx={{
+                                    '& label.Mui-focused': {
+                                        // color: 'white',
                                     },
-                                    '&:hover fieldset': {
-                                        borderColor: 'white',
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'yellow',
                                     },
-                                    '&.Mui-focused fieldset': {
-                                        // borderColor: 'yellow',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: 'white',
+                                            borderRadius: 0,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: 'white',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            // borderColor: 'yellow',
+                                        },
                                     },
-                                },
-                            }} />}
-                        />
-                    </LocalizationProvider>
+                                }} />}
+                            />
+                        </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
                         <BoxButton
@@ -269,10 +333,14 @@ const Booking = () => {
                     </Grid>
                 </Grid>
 
-                <FloatingAddButton
-                    title='Adicionar passageiro'
-                    onClick={addUser}
-                />
+                {
+                    url.id > clients.length && (
+                        <FloatingAddButton
+                            title='Adicionar passageiro'
+                            onClick={addUser}
+                        />
+                    )
+                }
             </div>
         </Wrap>
     )

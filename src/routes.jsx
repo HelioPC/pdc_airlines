@@ -17,7 +17,7 @@ const App = () => {
                         <Route path='/' element={<Home />} />
                         <Route path='/sign' element={<Auth />} />
                         <Route path='/flySearch' element={<FlySearchResult />} />
-                        <Route path='/book' element={<Booking />} />
+                        <Route path='/book/:id' element={<Booking />} />
                         <Route path='/*' element={<Page404 />} />
                     </Routes>
                 </BookingProvider>

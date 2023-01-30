@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useBooking } from '../../contexts/BookingContext'
+import { useNavigate } from 'react-router-dom'
 
-const SelectPlace = () => {
+const SelectPlace = (props) => {
     const [selectedPlaces, setSelectedPlaces] = useState([])
     const { dispatch } = useBooking()
+    const { closeModal } = props
+    const navigate = useNavigate()
 
     const info = {
         lugares: [
@@ -78,66 +82,66 @@ const SelectPlace = () => {
             </div>
 
             {
-                    Array.from({ length: rows }, (_, idx) => `${idx}`).map((i, index) => (
-                        <div key={index} className='w-full flex items-center'>
-                            <div className='mr-auto'>{index+1}</div>
+                Array.from({ length: rows }, (_, idx) => `${idx}`).map((i, index) => (
+                    <div key={index} className='w-full flex items-center'>
+                        <div className='mr-auto'>{index + 1}</div>
 
-                            <div className='mx-auto flex gap-1'>
-                                {
-                                    info.lugares.slice(7*i, 7*i+2).map((lugar, index2) => (
-                                        <div
-                                            key={index2}
-                                            className={`
+                        <div className='mx-auto flex gap-1'>
+                            {
+                                info.lugares.slice(7 * i, 7 * i + 2).map((lugar, index2) => (
+                                    <div
+                                        key={index2}
+                                        className={`
                                                 w-[30px] h-[30px] flex items-center justify-center
                                                 cursor-pointer hover:scale-105 duration-300
                                                 rounded-md text-white bg-[#555]
                                                 ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
                                             `}
-                                            onClick={() => handleSelectPlace(lugar.id, lugar.state)}
-                                        >
-                                            {lugar.id}
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            <div className='flex gap-1 mx-auto'>
-                                {
-                                    info.lugares.slice(7*i+2, 7*i+5).map((lugar, index2) => (
-                                        <div
-                                            key={index2}
-                                            className={`
-                                                w-[30px] h-[30px] flex items-center justify-center
-                                                cursor-pointer hover:scale-105 duration-300
-                                                rounded-md text-white bg-[#555]
-                                                ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
-                                            `}
-                                            onClick={() => handleSelectPlace(lugar.id, lugar.state)}
-                                        >
-                                            {lugar.id}
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            <div className='flex gap-1 mx-auto'>
-                                {
-                                    info.lugares.slice(7*i+5, 7*i+7).map((lugar, index2) => (
-                                        <div
-                                            key={index2}
-                                            className={`
-                                                w-[30px] h-[30px] flex items-center justify-center
-                                                cursor-pointer hover:scale-105 duration-300
-                                                rounded-md text-white bg-[#555]
-                                                ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
-                                            `}
-                                            onClick={() => handleSelectPlace(lugar.id, lugar.state)}
-                                        >
-                                            {lugar.id}
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                                        onClick={() => handleSelectPlace(lugar.id, lugar.state)}
+                                    >
+                                        {lugar.id}
+                                    </div>
+                                ))
+                            }
                         </div>
-                    ))
+                        <div className='flex gap-1 mx-auto'>
+                            {
+                                info.lugares.slice(7 * i + 2, 7 * i + 5).map((lugar, index2) => (
+                                    <div
+                                        key={index2}
+                                        className={`
+                                                w-[30px] h-[30px] flex items-center justify-center
+                                                cursor-pointer hover:scale-105 duration-300
+                                                rounded-md text-white bg-[#555]
+                                                ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
+                                            `}
+                                        onClick={() => handleSelectPlace(lugar.id, lugar.state)}
+                                    >
+                                        {lugar.id}
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div className='flex gap-1 mx-auto'>
+                            {
+                                info.lugares.slice(7 * i + 5, 7 * i + 7).map((lugar, index2) => (
+                                    <div
+                                        key={index2}
+                                        className={`
+                                                w-[30px] h-[30px] flex items-center justify-center
+                                                cursor-pointer hover:scale-105 duration-300
+                                                rounded-md text-white bg-[#555]
+                                                ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
+                                            `}
+                                        onClick={() => handleSelectPlace(lugar.id, lugar.state)}
+                                    >
+                                        {lugar.id}
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                ))
             }
 
             {selectedPlaces.length > 0 ?
@@ -149,10 +153,16 @@ const SelectPlace = () => {
                             bg-[#B81D24] hover:bg-[#980D14] hover:scale-105
                         `}
                         type='submit'
-                        onClick={() => dispatch({
-                            type: 'setCurrentStep',
-                            payload: 1,
-                        })}
+                        onClick={
+                            () => {
+                                dispatch({
+                                    type: 'setCurrentStep',
+                                    payload: 1,
+                                })
+                                closeModal()
+                                navigate('/book/3')
+                            }
+                        }
                     >
                         Compre por {selectedPlaces.length * 5000} kz
                     </button>
@@ -163,40 +173,8 @@ const SelectPlace = () => {
     )
 }
 
+SelectPlace.propTypes = {
+    closeModal: PropTypes.func.isRequired,
+}
+
 export default SelectPlace
-
-/*
-{
-                    info.lugares.map((lugar, index) => (
-                        <div
-                            key={index}
-                            className={`
-                                w-full h-full flex items-center justify-center
-                                rounded-md text-white
-                                ${lugar.state == '1' ? 'bg-[#C00]' : 'cursor-pointer hover:scale-105 duration-300 ' + (selectedPlaces.includes(lugar.id) ? 'bg-[#090]' : 'bg-[#555]')}
-                            `}
-                            onClick={() => handleSelectPlace(lugar.id, lugar.state)}
-                        >
-                            {index+1}
-                        </div>
-                    ))
-                }
-
-                <div className='flex gap-1 mx-auto'>
-                    {
-                        [1, 2].map((i, index) => (
-                            <div
-                                key={index}
-                                className={`
-                                    w-[30px] h-[30px] flex items-center justify-center
-                                    cursor-pointer hover:scale-105 duration-300
-                                    rounded-md text-white bg-[#555]
-                                `}
-                            >
-                                {i}
-                            </div>
-                        ))
-                    }
-                </div>
-                <div className='mr-auto'>1</div>
-*/
