@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Tooltip from '@mui/material/Tooltip'
 import PropTypes from 'prop-types'
 import { AiOutlineLogin } from 'react-icons/ai'
@@ -16,11 +16,11 @@ const NavbarItem = (props) => {
     const navigate = useNavigate()
 
     return (
-        <li className={`mx-4 ${classProp}`}>
+        <li className={`lg:mx-4 mx-2 ${classProp}`}>
             {
                 button ? (
                     <button
-                        className='cursor-pointer duration-500 font-bold text-white bg-transparent border-none'
+                        className='lg:text-base text-sm cursor-pointer duration-500 font-bold text-white bg-transparent border-none'
                         onClick={() => navigate(url)}
                     >
                         {title}
@@ -28,7 +28,7 @@ const NavbarItem = (props) => {
                 ) : (
                     <a
                         href={url}
-                        className='cursor-pointer duration-500 font-bold text-white'
+                        className='lg:text-base text-sm cursor-pointer duration-500 font-bold text-white'
                     >
                         {title}
                     </a>
@@ -47,7 +47,6 @@ NavbarItem.propTypes = {
 
 const Header = () => {
     const { validUser } = useUser()
-    const [color, setColor] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const { user } = useUser()
     const headerElements = [
@@ -74,20 +73,8 @@ const Header = () => {
         },
     ]
 
-    useEffect(() => {
-        const scrollListener = () => {
-            setColor(window.scrollY < 165)
-        }
-
-        window.addEventListener('scroll', scrollListener)
-
-        return () => {
-            window.removeEventListener('scroll', scrollListener)
-        }
-    }, [])
-
     return (
-        <header className={`h-20 w-full flex items-center md:justify-start justify-between text-white py-4 md:px-20 px-5 gap-x-5 z-10 duration-500 ${color ? 'bg-transparent' : 'bg-[rgba(0,0,0,.7)] backdrop-blur-md'}`}>
+        <header className='h-20 w-full flex items-center md:justify-start justify-between text-white py-4 lg:px-20 px-5 z-10 duration-500'>
             <div className='w-full'>
                 <div className='w-full flex'>
                     <div
