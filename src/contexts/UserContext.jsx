@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 
 const initialUser = {
     id: 0,
-    name: '',
+    nome: '',
+    sobrenome: '',
+    telefone: 0,
     email: '',
     state: 0,
 }

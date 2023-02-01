@@ -6,6 +6,7 @@ import Auth from './pages/Auth'
 import Booking from './pages/Booking'
 import FlySearchResult from './pages/FlySearchResult'
 import Home from './pages/Home'
+import MyFlight from './pages/MyFlight'
 import Page404 from './pages/Page404'
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
                         <Route path='/sign' element={<Auth />} />
                         <Route path='/flySearch' element={<FlySearchResult />} />
                         <Route path='/book/:id' element={<Booking />} />
+                        <Route path='/search' element={<MyFlight />} />
                         <Route path='/*' element={<Page404 />} />
                     </Routes>
                 </BookingProvider>

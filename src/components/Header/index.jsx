@@ -50,8 +50,7 @@ const Header = () => {
     const [showModal, setShowModal] = useState(false)
     const { user } = useUser()
     const headerElements = [
-        { title: 'Descubra', url: '/#destiny', button: false },
-        { title: 'Subscreva', url: '/#news', button: false },
+        { title: 'Meu voo', url: '/search', button: false },
         { title: 'Membro PDC', url: '/', button: true },
         { title: 'Check-in', url: '/', button: false },
     ]
@@ -74,14 +73,15 @@ const Header = () => {
     ]
 
     return (
-        <header className='h-20 w-full flex items-center md:justify-start justify-between text-white py-4 lg:px-20 px-5 z-10 duration-500'>
+        <header className='h-20 w-full flex items-center md:justify-start justify-between text-white py-4 lg:px-20 px-0 z-10 duration-500'>
             <div className='w-full'>
                 <div className='w-full flex'>
-                    <div
+                    <a
+                        href='/'
                         className='p-3 rounded-full cursor-pointer'
                     >
                         <img src={Logo} alt='logo' className='w-20 h-full' />
-                    </div>
+                    </a>
                     <ul
                         className='
                             sm:flex hidden list-none flex-row
@@ -120,7 +120,7 @@ const Header = () => {
                 maxWidth={modalSteps[user.state].width}
                 handleClose={() => setShowModal(false)}
             >
-                <MemberForm closeModal={closeModal} />
+                {modalSteps[user.state].children}
             </Modal>
         </header>
     )

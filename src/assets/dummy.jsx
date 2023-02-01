@@ -192,13 +192,13 @@ export const flightInfo = [
     {
         id: 2,
         origin: {
-            name: 'Luanda',
-            shortName: 'LAD',
+            name: 'Londres',
+            shortName: 'LDR',
             time: '09:35',
         },
         destiny: {
-            name: 'Lisboa',
-            shortName: 'LIS',
+            name: 'Brasília',
+            shortName: 'BRL',
             time: '16:50',
         },
         image: '/src/assets/images/bali.jpeg',
@@ -388,13 +388,13 @@ export const flightInfo = [
     {
         id: 3,
         origin: {
-            name: 'Luanda',
-            shortName: 'LAD',
+            name: 'Porto',
+            shortName: 'PRT',
             time: '09:35',
         },
         destiny: {
-            name: 'Lisboa',
-            shortName: 'LIS',
+            name: 'Berlim',
+            shortName: 'BLM',
             time: '16:50',
         },
         image: '/src/assets/images/bali.jpeg',
