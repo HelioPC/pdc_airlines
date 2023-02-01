@@ -5,6 +5,7 @@ import { RiLuggageCartFill } from 'react-icons/ri'
 
 export const flightInfo = [
     {
+        id: 1,
         origin: {
             name: 'Luanda',
             shortName: 'LAD',
@@ -189,6 +190,7 @@ export const flightInfo = [
         },
     },
     {
+        id: 2,
         origin: {
             name: 'Luanda',
             shortName: 'LAD',
@@ -384,6 +386,7 @@ export const flightInfo = [
         },
     },
     {
+        id: 3,
         origin: {
             name: 'Luanda',
             shortName: 'LAD',
