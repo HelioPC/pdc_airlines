@@ -1,12 +1,12 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
-export const AlertError = ({ title, description }) => {
+export const AlertError = ({ title, description, confirm }) => {
     Swal.fire({
         title: title,
         icon: 'error',
         text: description,
-    })
+    }).then(confirm).catch(function (error) {console.log(error)})
 }
 
 export const AlertSuccess = ({ title, description, link, message, confirm }) => {

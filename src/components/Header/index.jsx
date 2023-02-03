@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import Tooltip from '@mui/material/Tooltip'
 import PropTypes from 'prop-types'
-import { AiOutlineLogin } from 'react-icons/ai'
-import { MdOutlinePersonOutline } from 'react-icons/md'
+import { MdOutlinePersonOutline, MdAdminPanelSettings, MdLogout } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
 import Modal from '../Modal'
 import Logo from '../../assets/images/logo.png'
-import MemberForm from '../MemberForm'
 import MemberLogin from '../MemberLogin'
 import { useUser } from '../../contexts/UserContext'
 
@@ -46,9 +44,8 @@ NavbarItem.propTypes = {
 }
 
 const Header = () => {
-    const { validUser } = useUser()
+    const { validUser, dispatch } = useUser()
     const [showModal, setShowModal] = useState(false)
-    const { user } = useUser()
     const headerElements = [
         { title: 'Meu voo', url: '/search', button: false },
         { title: 'Membro PDC', url: '/', button: true },
@@ -58,19 +55,6 @@ const Header = () => {
     const closeModal = () => {
         setShowModal(false)
     }
-
-    const modalSteps = [
-        {
-            title: 'Faça parte da família',
-            width: 'lg',
-            children: <MemberForm closeModal={closeModal} />,
-        },
-        {
-            title: 'Login',
-            width: 'sm',
-            children: <MemberLogin closeModal={closeModal} />,
-        },
-    ]
 
     return (
         <header className='h-20 w-full flex items-center md:justify-start justify-between text-white py-4 lg:px-20 px-0 z-10 duration-500'>
@@ -98,29 +82,50 @@ const Header = () => {
                             ml-auto rounded-full p-2 flex gap-3 items-center justify-center
                             duration-500
                         `}>
-                            {validUser && (
-                                <Tooltip placement='bottom' title='Tornar-se membro'>
-                                    <button className='border-none bg-transparent'
-                                        onClick={() => setShowModal(true)}
-                                    >
-                                        <MdOutlinePersonOutline size={20} className='text-white duration-500' />
-                                    </button>
-                                </Tooltip>
-                            )}
-                            <a href='/sign'>
-                                <AiOutlineLogin size={20} className='text-white duration-500' />
-                            </a>
+                            {validUser ?
+                                (
+                                    <Tooltip placement='bottom' title='Entrar como membro'>
+                                        <button className='border-none bg-transparent'
+                                            onClick={() => setShowModal(true)}
+                                        >
+                                            <MdOutlinePersonOutline size={20} className='text-white duration-500' />
+                                        </button>
+                                    </Tooltip>
+                                ) : (
+                                    <Tooltip placement='bottom' title='Terminar sessão'>
+                                        <button className='border-none bg-transparent'
+                                            onClick={
+                                                () => {
+                                                    localStorage.removeItem('userPDCAirlines2023')
+                                                    dispatch({
+                                                        type: 'clearUser',
+                                                        payload: null,
+                                                    })
+                                                    window.location.reload()
+                                                }
+                                            }
+                                        >
+                                            <MdLogout size={20} className='text-white duration-500' />
+                                        </button>
+                                    </Tooltip>
+                                )
+                            }
+                            <Tooltip placement='bottom' title='Administrador'>
+                                <a href='/sign'>
+                                    <MdAdminPanelSettings size={20} className='text-white duration-500' />
+                                </a>
+                            </Tooltip>
                         </li>
                     </ul>
                 </div>
             </div>
             <Modal
-                title={modalSteps[user.state].title}
+                title='Membro PDC - Airlines'
                 open={showModal}
-                maxWidth={modalSteps[user.state].width}
+                maxWidth='sm'
                 handleClose={() => setShowModal(false)}
             >
-                {modalSteps[user.state].children}
+                <MemberLogin closeModal={closeModal} />
             </Modal>
         </header>
     )
