@@ -1,27 +1,38 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Switch from '@mui/material/Switch'
+import { Tooltip } from '@mui/material'
+import { BsPlusCircleFill } from 'react-icons/bs'
+import { MdDelete } from 'react-icons/md'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import PI from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+
 import { AlertError, AlertSuccess } from '../../utils/Alert'
-
-
-
-import { Tooltip } from '@mui/material'
-import { BsPlusCircleFill } from 'react-icons/bs'
-import { MdDelete } from 'react-icons/md'
-import styled from 'styled-components'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import Logo from '../../assets/images/logo.png'
 
 const ReactPhoneInput = PI.default ? PI.default : PI
 
 const Wrap = styled.div`
     width: 100%;
+    height: 100%;
     margin: 0 auto;
     padding: 10px;
 
@@ -76,9 +87,19 @@ const Booking = () => {
     const [email, setEmail] = useState('')
     const [sobreNome, setSobreNome] = useState('')
     const [telefone, setTelefone] = useState(0)
-    const [data, setData] = useState('')
+    const [data, setData] = useState('2000/10/04')
     const [disable, setDisable] = useState(true)
+    const [formChild, setFormChild] = useState(false)
+    const qtd = 4
     const url = useParams()
+    /*const location = useLocation()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!location.state?.fromApp) {
+            navigate('/*')
+        }
+    }, [])*/
 
     const addUser = () => {
         if (nome === '' || titulo === '' || email === '' || sobreNome === '' || telefone === '' || data === '') return
@@ -142,7 +163,7 @@ const Booking = () => {
                     >
                         <img src={Logo} alt='logo' className='w-20 h-full' />
                     </a>
-                    <h1>Preencha os seus dados</h1>
+                    <h1 className='text-lg'>Preencha os seus dados</h1>
                 </div>
 
                 {
@@ -204,7 +225,7 @@ const Booking = () => {
                                                             }}
                                                         >
                                                             <MdDelete
-                                                                size={20} className='cursor-pointer'
+                                                                size={20} className='cursor-pointer hover:text-red-600 duration-300'
                                                             />
                                                         </button>
                                                     </Tooltip>
@@ -219,6 +240,19 @@ const Booking = () => {
                 }
 
                 <Grid item container spacing={3} justify='center'>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <div className='flex flex-col'>
+                            <span>{clients.length}/{qtd}</span>
+                            <div className='flex items-center'>
+                                <Switch
+                                    checked={formChild}
+                                    onChange={(e) => setFormChild(e.target.checked)}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                                <span>Criança</span>
+                            </div>
+                        </div>
+                    </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <FormControl fullWidth variant='outlined'>
                             <InputLabel id='demo-simple-select-outlined-label'>
@@ -296,7 +330,8 @@ const Booking = () => {
                                 inputFormat='YYYY/MM/DD'
                                 value={data}
                                 onChange={(newValue) => {
-                                    setData(`${newValue.$y}-${newValue.$M > 9 ? '' : '0'}${newValue.$M + 1}-${newValue.$D > 9 ? '' : '0'}${newValue.$D}`)
+                                    if(newValue === null) setData('')
+                                    else setData(`${newValue.$y}-${newValue.$M > 9 ? '' : '0'}${newValue.$M + 1}-${newValue.$D > 9 ? '' : '0'}${newValue.$D}`)
                                 }}
                                 maxDate='2005/01/01'
                                 renderInput={(params) => <TextField {...params} fullWidth sx={{
@@ -322,19 +357,23 @@ const Booking = () => {
                             />
                         </LocalizationProvider>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={12}>
-                        <BoxButton
-                            disabled={disable}
-                            className={`${disable ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                            onClick={handleBooking}
-                        >
-                            Compre {`${disable ? '' : `por ${clients.length * 5000} kz`}`}
-                        </BoxButton>
-                    </Grid>
+                    {
+                        !disable && (
+                            <Grid item xs={12} sm={12} md={12}>
+                                <BoxButton
+                                    disabled={disable}
+                                    className={`${disable ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                    onClick={handleBooking}
+                                >
+                                    Compre {`${disable ? '' : `por ${clients.length * 5000} kz`}`}
+                                </BoxButton>
+                            </Grid>
+                        )
+                    }
                 </Grid>
 
                 {
-                    url.id > clients.length && (
+                    qtd > clients.length && (
                         <FloatingAddButton
                             title='Adicionar passageiro'
                             onClick={addUser}
