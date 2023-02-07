@@ -44,13 +44,19 @@ NavbarItem.propTypes = {
 }
 
 const Header = () => {
-    const { validUser, dispatch } = useUser()
+    const { validUser, dispatch, user } = useUser()
     const [showModal, setShowModal] = useState(false)
-    const headerElements = [
+    var headerElements = [
         { title: 'Meu voo', url: '/search', button: false },
-        { title: 'Membro PDC', url: '/', button: true },
-        { title: 'Check-in', url: '/', button: false },
     ]
+
+    if(!validUser) {
+        headerElements.push({
+            title: 'Membro PDC',
+            url: `/member/${user.nome.toLowerCase().replaceAll(' ', '')}`,
+            button: false,
+        })
+    }
 
     const closeModal = () => {
         setShowModal(false)

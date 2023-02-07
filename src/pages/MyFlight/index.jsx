@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { MdAirplanemodeActive, MdRemoveRedEye, MdSearch } from 'react-icons/md'
+import Drawer from '@mui/material/Drawer'
+import { MdAirplanemodeActive, MdEdit, MdRemoveRedEye, MdSearch } from 'react-icons/md'
 import { GiAirplaneDeparture } from 'react-icons/gi'
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
 import { ThreeDots } from 'react-loader-spinner'
@@ -8,49 +9,67 @@ import * as S from './style'
 import Header from '../../components/Header'
 import { flightInfo } from '../../assets/dummy'
 import logo from '../../assets/images/logo.png'
+import { useUser } from '../../contexts/UserContext'
+import Modal from '../../components/Modal'
+import { Tooltip } from '@mui/material'
+import EditFlight from '../../components/EditFlight'
 
 const LoadingIndicator = () => {
-	const { promiseInProgress } = usePromiseTracker()
+    const { promiseInProgress } = usePromiseTracker()
 
-	return (
-		promiseInProgress &&
-		<div className='w-full h-56 flex justify-center items-center'>
-            <ThreeDots 
-                height='80' 
-                width='80' 
+    return (
+        promiseInProgress &&
+        <div className='w-full h-56 flex justify-center items-center'>
+            <ThreeDots
+                height='80'
+                width='80'
                 radius='9'
-                color='#FFF' 
+                color='#FFF'
                 ariaLabel='three-dots-loading'
                 wrapperStyle={{}}
                 wrapperClassName=''
                 visible={true}
             />
         </div>
-	)
+    )
 }
 
 const MyFlight = () => {
     const [flightId, setFlightId] = useState('')
     const [flightResult, setFlightResult] = useState()
     const [showFlight, setShowFlight] = useState(false)
+    const [showDrawer, setShowDrawer] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
     const [disable, setDisable] = useState(false)
+    const { validUser } = useUser()
+
+    const toggleDrawer = (open) => (event) => {
+        if (
+            event.type === 'keydown' &&
+            ((event).key === 'Tab' ||
+                (event).key === 'Shift')
+        ) {
+            return
+        }
+        setShowDrawer(!open)
+    }
 
     const FetchTest = async () => {
-		await new Promise(res => setTimeout(res, 5000))
-	}
+        await new Promise(res => setTimeout(res, 2000))
+    }
 
     const handleClick = async () => {
-        if(flightId === '') return
+        if (flightId === '') return
         setDisable(true)
         setShowFlight(false)
         await trackPromise(
-			FetchTest().then(() => {
+            FetchTest().then(() => {
                 console.log(flightInfo.find(f => f.id == flightId))
                 setFlightResult(flightInfo.find(f => f.id == flightId))
                 setShowFlight(true)
                 setDisable(false)
-			}),
-		)
+            }),
+        )
     }
 
     return (
@@ -90,39 +109,79 @@ const MyFlight = () => {
             {
                 showFlight && (
                     flightResult !== undefined ? (
-                    <S.FlySearchBody>
-                        <div>
-                            <S.FlySearchContent className='shadow-lg my-5 text-black'>
-                                <S.FlySearchContentLogo>
-                                    <img src={logo} alt='logo' className='md:w-full w-auto h-full' />
-                                </S.FlySearchContentLogo>
-                                <S.FlySearchContentBody>
-                                    <div className='md:w-auto w-full justify-between flex items-center gap-5 text-white'>
-                                        <div className='flex flex-col items-center'>
-                                            <p className='md:text-base text-sm'>{flightResult.origin.time}</p>
-                                            <p className='md:text-sm text-xs text-[#CCC]'>{flightResult.origin.shortName}</p>
+                        <S.FlySearchBody>
+                            <div>
+                                <S.FlySearchContent className='shadow-lg my-5 text-black'>
+                                    <S.FlySearchContentLogo>
+                                        <img src={logo} alt='logo' className='md:w-full w-auto h-full' />
+                                    </S.FlySearchContentLogo>
+                                    <S.FlySearchContentBody>
+                                        <div className='md:w-auto w-full justify-between flex items-center gap-5 text-white'>
+                                            <div className='flex flex-col items-center'>
+                                                <p className='md:text-base text-sm'>{flightResult.origin.time}</p>
+                                                <p className='md:text-sm text-xs text-[#CCC]'>{flightResult.origin.shortName}</p>
+                                            </div>
+                                            <GiAirplaneDeparture size={30} />
+                                            <div className='flex flex-col items-center'>
+                                                <p className='md:text-base text-sm'>{flightResult.destiny.time}</p>
+                                                <p className='md:text-sm text-xs text-[#CCC]'>{flightResult.destiny.shortName}</p>
+                                            </div>
                                         </div>
-                                        <GiAirplaneDeparture size={30} />
-                                        <div className='flex flex-col items-center'>
-                                            <p className='md:text-base text-sm'>{flightResult.destiny.time}</p>
-                                            <p className='md:text-sm text-xs text-[#CCC]'>{flightResult.destiny.shortName}</p>
+                                        <div>
+                                            {
+                                                !validUser && (
+                                                    <Tooltip
+                                                        placement='top'
+                                                        title='Editar'
+                                                    >
+                                                        <button
+                                                            className='md:mx-4 mx-2 text-[14px] font-semibold border-none bg-transparent'
+                                                            onClick={() => setShowEditModal(true)}
+                                                        >
+                                                            <MdEdit size={20} color='#FFF' />
+                                                        </button>
+                                                    </Tooltip>
+                                                )
+                                            }
+                                            <button
+                                                className='md:mx-4 mx-2 text-[14px] font-semibold border-none bg-transparent'
+                                                onClick={() => setShowDrawer(true)}
+                                            >
+                                                <MdRemoveRedEye size={20} color='#FFF' />
+                                            </button>
                                         </div>
-                                    </div>
-                                    <button
-                                        className='md:mx-4 mx-2 text-[14px] font-semibold border-none bg-transparent'
-                                        onClick={() => { }}
+                                    </S.FlySearchContentBody>
+                                </S.FlySearchContent>
+                            </div>
+                            <Drawer
+                                anchor='right'
+                                open={showDrawer}
+                                onClose={toggleDrawer(true)}
+                            >
+                                <div
+                                    className='w-[320px]'
+                                >
+                                    Olá
+                                </div>
+                            </Drawer>
+                            {
+                                !validUser && (
+                                    <Modal
+                                        title='Editar dados do voo'
+                                        open={showEditModal}
+                                        handleClose={() => setShowEditModal(false)}
+                                        maxWidth='lg'
                                     >
-                                        <MdRemoveRedEye size={30} color='#FFF' />
-                                    </button>
-                                </S.FlySearchContentBody>
-                            </S.FlySearchContent>
+                                        <EditFlight />
+                                    </Modal>
+                                )
+                            }
+                        </S.FlySearchBody>
+                    ) : (
+                        <div className='w-full h-56 flex justify-center items-center'>
+                            <p>Não existem voos com o este identificador</p>
                         </div>
-                    </S.FlySearchBody>
-                ) : (
-                    <div className='w-full h-56 flex justify-center items-center'>
-                        <p>Não existem voos com o este identificador</p>
-                    </div>
-                )
+                    )
                 )
             }
             <LoadingIndicator />
