@@ -117,6 +117,7 @@ const Welcome = ({ title, description, background }) => {
                     >
                         <InputLabel id='demo-simple-select-label'>Origem</InputLabel>
                         <Select
+                            error={true}
                             labelId='demo-simple-select-label'
                             id='demo-simple-select'
                             value={origin}

@@ -27,10 +27,10 @@ const App = () => {
                             <Route path='/member/:id' element={<MemberDashboard />} />
                             <Route path='/member/:id/flights' element={<MemberFlights />} />
                         </Route>
-                    <Route path='/*' element={<Page404 />} />
-                </Routes>
-            </BookingProvider>
-        </UserProvider>
+                        <Route path='/*' element={<Page404 />} />
+                    </Routes>
+                </BookingProvider>
+            </UserProvider>
         </BrowserRouter >
     )
 }

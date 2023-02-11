@@ -1,13 +1,46 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable react/prop-types */
 import { TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../../components/Modal'
 import { useUser } from '../../contexts/UserContext'
 
 const ChangeData = ({ setOpen }) => {
     const { user } = useUser()
-    const [nome, setNome] = useState(user.name)
+    const [nome, setNome] = useState(user.nome)
     const [email, setEmail] = useState(user.email)
+    const [nomeError, setNomeError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [disable, setDisable] = useState(false)
+
+    useEffect(() => {
+        setDisable(emailError || nomeError || nome == '' || email == '' || nome == undefined || email == undefined || nome == null || email == null)
+    }, [nome, email, nomeError, emailError])
+
+    useEffect(() => {
+        const handleChangeEmail = () => {
+            const regex = '^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$'
+    
+            if(!email.match(regex)) setEmailError(true)
+            else setEmailError(false)
+        }
+
+        handleChangeEmail()
+    }, [email])
+
+    useEffect(() => {
+        const handleChangeNome = () => {
+            const regex = '^[A-ZÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕ][A-Za-záéíóúàèìòùãõâêîôû]*$'
+
+            if(!nome.match(regex)) setNomeError(true)
+            else if(nome.length < 2) setNomeError(true)
+            else setNomeError(false)
+
+            
+        }
+
+        handleChangeNome()
+    }, [nome])
 
     return (
         <div className='flex flex-col gap-6'>
@@ -16,6 +49,7 @@ const ChangeData = ({ setOpen }) => {
                 label='Nome'
                 className='my-2'
                 value={nome}
+                error={nomeError}
                 onChange={(e) => setNome(e.target.value)}
             />
 
@@ -24,14 +58,19 @@ const ChangeData = ({ setOpen }) => {
                 label='E-mail'
                 className='my-2'
                 value={email}
+                error={emailError}
                 onChange={(e) => setEmail(e.target.value)}
             />
 
             <div className='w-full'>
                 <button
-                    className='p-2 w-full bg-[#2564CF] hover:bg-[#2564CF] hover:scale-105 duration-500 text-white rounded-md border-none'
+                    className={`
+                        p-2 w-full bg-[#2564CF] hover:bg-[#2564CF] duration-500 text-white rounded-md border-none
+                        ${disable ? 'cursor-not-allowed' : 'cursor-pointer'}
+                    `}
                     type='submit'
-                    onClick={() => setOpen(false)}
+                    disabled={disable}
+                    onClick={() => console.log(nome, email)}
                 >
                     Alterar
                 </button>
@@ -44,7 +83,35 @@ const ChangePassword = ({ setOpen }) => {
     // const { user, dispatch } = useUser()
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
-    // const [differentPassword, setDifferentPassword] = useState(false)
+    const [oldError, setOldError] = useState(false)
+    const [newError, setNewError] = useState(false)
+    const [disable, setDisable] = useState(false)
+
+    useEffect(() => {
+        setDisable(oldError || newError || oldPassword == '' || newPassword == '' || oldPassword == undefined || newPassword == undefined || oldPassword == null || newPassword == null)
+    }, [oldPassword, newPassword, oldError, newError])
+
+    useEffect(() => {
+        const handleChangeOld = () => {
+            const regex = '^[0-9]{4,6}$'
+
+            if (!oldPassword.match(regex)) setOldError(true)
+            else setOldError(false)
+        }
+
+        handleChangeOld()
+    }, [oldPassword])
+
+    useEffect(() => {
+        const handleChangeNew = () => {
+            const regex = '^[0-9]{4,6}$'
+
+            if (!newPassword.match(regex)) setNewError(true)
+            else setNewError(false)
+        }
+
+        handleChangeNew()
+    }, [newPassword])
 
     return (
         <div className='flex flex-col gap-6'>
@@ -55,6 +122,7 @@ const ChangePassword = ({ setOpen }) => {
                     type='password'
                     className='my-2'
                     value={oldPassword}
+                    error={oldError}
                     onChange={(e) => setOldPassword(e.target.value)}
                 />
 
@@ -64,15 +132,19 @@ const ChangePassword = ({ setOpen }) => {
                     type='password'
                     className='my-2'
                     value={newPassword}
+                    error={newError}
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
             </div>
 
             <div className='w-full'>
                 <button
-                    className='p-2 w-full bg-[#2564CF] hover:bg-[#2564CF] hover:scale-105 duration-500 text-white rounded-md border-none'
+                    className={`
+                        p-2 w-full bg-[#2564CF] hover:bg-[#2564CF] duration-500 text-white rounded-md border-none
+                        ${disable ? 'cursor-not-allowed' : 'cursor-pointer'}
+                    `}
                     type='submit'
-                    onClick={() => setOpen(false)}
+                    onClick={() => console.log(oldPassword, newPassword)}
                 >
                     Alterar
                 </button>
